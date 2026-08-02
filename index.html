@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Eesha's Table</title>    
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: 'Poppins', sans-serif;
+                transition: background 0.3s ease, color 0.3s ease;
+            }
+
+            :root {
+                --bg-gradient: linear-gradient(135deg, #b62dae, #080968, #960d6e);
+                --text-color: #ffffff;
+                --nav-bg: rgba(30, 20, 20, .75);
+                --card-bg: rgba(255, 255, 255, .08);
+                --card-border: rgba(255, 255, 255, 0.05);
+                --btn-bg: rgba(255, 255, 255, 0.1);
+                --btn-text: #f6dada;
+            }
+
+            body.light-mode {
+                --bg-gradient: linear-gradient(135deg, #fff0f5, #ffe4e1, #fffacd);
+                --text-color: #333333;
+                --nav-bg: rgba(255, 255, 255, 0.85);
+                --card-bg: rgba(0, 0, 0, 0.04);
+                --card-border: rgba(0, 0, 0, 0.08);
+                --btn-bg: rgba(0, 0, 0, 0.08);
+                --btn-text: #333333;
+            }
+
+            body {
+                background: var(--bg-gradient);
+                color: var(--text-color);
+                min-height: 260vh;
+                overflow-x: hidden;
+                padding: 0;
+            }
+
+            /* Sunflower Petals Falling Animation */
+            .petal-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 1;
+                overflow: hidden;
+            }
+
+            .petal {
+                position: absolute;
+                background: #ffcc00;
+                border-radius: 150% 0 150% 0;
+                animation: fall linear infinite;
+                opacity: 0.8;
+            }
+
+            @keyframes fall {
+                0% {
+                    transform: translateY(-10vh) translateX(0) rotate(0deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(110vh) translateX(100px) rotate(360deg);
+                    opacity: 0.2;
+                }
+            }
+
+            /* Navbar Styling with Buttons */
+            nav {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 10%;
+                position: sticky;
+                top: 0;
+                backdrop-filter: blur(15px);
+                background: var(--nav-bg);
+                z-index: 999;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            }
+
+            .logo {
+                font-size: 24px;
+                font-weight: bold;
+                color: var(--text-color);
+            }
+
+            .nav-buttons {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                flex-wrap: wrap;
+            }
+
+            .nav-btn, .control-btn {
+                background: var(--btn-bg);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: var(--btn-text);
+                padding: 8px 14px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: 0.3s ease;
+            }
+
+            .nav-btn:hover, .nav-btn.active, .control-btn:hover {
+                background: #00c3ff;
+                color: #fff;
+                border-color: #00c3ff;
+                transform: translateY(-2px);
+            }
+
+            /* Section Common Layout */
+            section {
+                max-width: 1200px;
+                margin: 40px auto;
+                padding: 0 10%;
+                position: relative;
+                z-index: 2;
+                display: none;
+            }
+
+            section.active-section {
+                display: block;
+                animation: fadeIn 0.4s ease-in-out;
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            /* Hero & Intro Grid (About Section) */
+            .hero {
+                display: grid;
+                grid-template-columns: 1.1fr .9fr;
+                gap: 70px;
+                align-items: center;
+                margin-bottom: 50px;
+            }
+
+            .card {
+                background: var(--card-bg);
+                backdrop-filter: blur(18px);
+                padding: 45px;
+                border-radius: 30px;
+                border: 1px solid var(--card-border);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, .35);
+                transition: .4s;
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+            }
+
+            .hero h4 {
+                font-weight: 300;
+                font-size: 22px;
+            }
+
+            .hero h1 {
+                font-size: 50px;
+                margin: 10px 0;
+            }
+
+            .hero h3 {
+                font-weight: 400;
+                margin-bottom: 20px;
+            }
+
+            .hero p {
+                line-height: 1.8;
+                font-size: 16px;
+                opacity: .95;
+            }
+
+            /* Avatar */
+            .avatar {
+                width: 90px;
+                height: 90px;
+                background: linear-gradient(135deg, #e94560, #ff6b6b);
+                border-radius: 50%;
+                margin: 0 auto 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 38px;
+                font-weight: bold;
+                color: #fff;
+                box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+            }
+
+            .bio {
+                font-size: 13px;
+                color: #b2bec3;
+                margin-bottom: 25px;
+            }
+
+            .links-container {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .social-link {
+                display: flex;
+                align-items: center;
+                background: var(--card-bg);
+                padding: 12px 18px;
+                border-radius: 10px;
+                color: var(--text-color);
+                text-decoration: none;
+                font-size: 14px;
+                transition: background 0.3s, transform 0.2s;
+                border: 1px solid var(--card-border);
+            }
+
+            .social-link i {
+                font-size: 20px;
+                margin-right: 15px;
+                width: 24px;
+                text-align: center;
+            }
+
+            .social-link span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .social-link.discord:hover { background: #5865F2; color: #fff; }
+            .social-link.email:hover { background: #ea4335; color: #fff; }
+            .social-link.github:hover { background: #24292e; color: #fff; }
+            .social-link:hover { transform: scale(1.02); }
+
+            /* Comic Book Elements */
+            .comic-title-wrapper {
+                text-align: center;
+                margin-bottom: 40px;
+            }
+
+            h1.comic-title {
+                font-family: 'Bangers', cursive, sans-serif;
+                font-size: 4rem;
+                color: #ff0055;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                text-shadow: 4px 4px 0px #000, 8px 8px 0px #00ffff;
+                transform: rotate(-2deg);
+                display: inline-block;
+            }
+
+            .archive-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 30px;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .comic-panel {
+                background: #fff;
+                border: 4px solid #000;
+                border-radius: 4px;
+                padding: 15px;
+                position: relative;
+                box-shadow: 8px 8px 0px #000;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            .comic-panel:hover {
+                transform: translate(-4px, -4px);
+                box-shadow: 12px 12px 0px #ff0055;
+            }
+
+            .speech-bubble {
+                background: #fff;
+                border: 3px solid #000;
+                border-radius: 10px;
+                padding: 15px;
+                position: relative;
+                margin-top: 10px;
+                font-weight: bold;
+            }
+
+            .speech-bubble h3 {
+                font-family: 'Bangers', cursive, sans-serif;
+                font-size: 1.8rem;
+                color: #0051ff;
+                margin-bottom: 5px;
+            }
+
+            .speech-bubble p {
+                font-size: 1rem;
+                color: #333;
+            }
+
+            .badge {
+                position: absolute;
+                top: -15px;
+                right: -15px;
+                background: #ffcc00;
+                border: 3px solid #000;
+                color: #000;
+                font-family: 'Bangers', cursive, sans-serif;
+                font-size: 1.2rem;
+                padding: 5px 10px;
+                transform: rotate(15deg);
+                box-shadow: 3px 3px 0px #000;
+                z-index: 2;
+            }
+
+            /* Like Section */
+            .like-card {
+                background: var(--card-bg);
+                backdrop-filter: blur(15px);
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                max-width: 500px;
+                margin: 0 auto;
+                border: 1px solid var(--card-border);
+            }
+
+            .like-card h2 {
+                margin-bottom: 20px;
+            }
+
+            #like-btn {
+                background-color: #ff4757;
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                font-size: 18px;
+                border-radius: 30px;
+                cursor: pointer;
+                transition: 0.3s ease;
+                box-shadow: 0 4px 6px rgba(255, 71, 87, 0.3);
+            }
+
+            #like-btn:hover { background-color: #ff6b81; transform: scale(1.05); }
+
+            /* Guestbook Section */
+            .guestbook-wrap {
+                max-width: 640px;
+                margin: 0 auto;
+            }
+
+            .guestbook-card {
+                background: var(--card-bg);
+                backdrop-filter: blur(15px);
+                border: 1px solid var(--card-border);
+                border-radius: 14px;
+                padding: 26px 26px 8px;
+            }
+
+            input[type="text"], textarea {
+                width: 100%;
+                background: rgba(0, 0, 0, 0.2);
+                border: 1px solid var(--card-border);
+                border-radius: 8px;
+                color: var(--text-color);
+                font-size: 15px;
+                padding: 12px 14px;
+                margin-bottom: 12px;
+                outline: none;
+            }
+
+            input[type="text"]:focus, textarea:focus { border-color: #e07a95; }
+
+            button.send {
+                width: 100%;
+                background: #e07a95;
+                border: none;
+                border-radius: 8px;
+                color: #3a0f1a;
+                font-weight: 600;
+                font-size: 16px;
+                padding: 13px;
+                cursor: pointer;
+                margin-bottom: 22px;
+                transition: background .15s ease;
+            }
+
+            button.send:hover { background: #c65f79; color: #f6e6ea; }
+
+            .hint, .time, .msg, .empty, .footnote {
+                color: inherit;
+                opacity: 0.8;
+            }
+
+            .entry {
+                border-top: 1px dashed rgba(226, 131, 155, 0.22);
+                padding: 16px 0;
+            }
+
+            .entry-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 12px;
+            }
+
+            .name { font-weight: 700; }
+
+            footer {
+                padding: 40px;
+                text-align: center;
+                position: relative;
+                z-index: 2;
+            }
+
+            @media(max-width: 900px) {
+                .hero {
+                    grid-template-columns: 1fr;
+                    text-align: center;
+                }
+                .hero h1 { font-size: 40px; }
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- Sunflower Petals Container -->
+        <div class="petal-container" id="petalContainer"></div>
+
+        <!-- TOP NAVIGATION BUTTONS -->
+        <nav>
+            <div class="logo">Eesha's Table</div>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="switchSection('about-section', this)">About</button>
+                <button class="nav-btn" onclick="switchSection('archive-section', this)">Comics</button>
+                <button class="nav-btn" onclick="switchSection('like-section', this)">Like</button>
+                <button class="nav-btn" onclick="switchSection('guestbook-section', this)">Guestbook</button>
+                <button class="control-btn" id="petalToggleBtn" onclick="togglePetals()">Sunflower: ON</button>
+                <button class="control-btn" id="themeToggleBtn" onclick="toggleTheme()">White Mode</button>
+            </div>
+        </nav>
+
+        <!-- 1. ABOUT SECTION -->
+        <section id="about-section" class="active-section">
+            <div class="hero">
+                <div class="card">
+                    <h4>Am I Eesha</h4>
+                    <ul>Yes Its Me Eesha.</ul>
+                    <h5>I Do Everything I like .</h5>
+                </div>             
+                <div class="avatar">^_^</div> 
+            </div>
+
+            <div class="hero">
+                <div class="card">
+                    <a href="https://eeshamandiw79-bot.github.io/EeshaMandiw.webpage/" target="_blank">
+                        <button style="padding:12px 25px; background:#00c3ff; color:white; border:none; border-radius:10px; cursor:pointer; font-size:18px;">
+                            About Me 👈
+                        </button>
+                    </a>
+                    <p>Do Yaa Want To Know About Me? Contact In This Link Visit It.</p>
+                </div>
+                <div class="speech-bubble">
+                    <h3>About Me?</h3>
+                    <p>Touch About Me To Go To My Other Website</p>
+                </div>
+            </div>
+
+            <div class="hero">
+                <div class="card">
+                    <a href="https://eeshamandiw79-bot.github.io/my.website/" target="_blank">
+                        <button style="padding:12px 25px; background:#00c3ff; color:white; border:none; border-radius:10px; cursor:pointer; font-size:18px;">
+                            My Editz 🎮
+                        </button>
+                    </a> 
+                    <p>I Am Editor. Visit There Btw ^_^ </p>
+                </div>
+                <div class="speech-bubble">
+                    <h3>My Editz?</h3>
+                    <p>Touch To Get Ideas For Editing Videos</p>
+                </div>
+            </div>
+
+            <div class="hero">
+                <div class="card">
+                    <a href="https://www.youtube.com/@U7K-EDITZ" target="_blank">
+                        <button style="padding:12px 25px; background:#00c3ff; color:white; border:none; border-radius:10px; cursor:pointer; font-size:18px;">
+                            📢 My YouTube Channel
+                        </button>
+                    </a> 
+                    <p>I Am Small Content Creater Visit My Youtube Page Btw  ^_^ </p>
+                </div>
+                <div class="speech-bubble">
+                    <h3>Youtube Channel?</h3>
+                    <p>My Content In This Youtube Channel</p>
+                </div>
+            </div>
+
+            <div class="hero">
+                <div class="card">
+                    <p>I Am P.K. Eesha Mandiw Panthuja. I live In Sri Lanka. I love Making Webpages And Editing Videos Bcz Its Gave Me Creative Ideas And It Clearing My Mind.</p>
+                </div>
+                <div class="card">
+                    <p>The Best Thing I do In My LIfe Is Writing html Bcz Its Fun And Other Thing I Do Was Making Content For My Youtube Channel.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="avatar">⚡</div>
+                <h1>Eesha'S Media</h1>
+                <p class="bio">Welcome To My Media</p>
+                <div class="links-container">
+                    <a href="#" class="social-link discord">
+                        <i class="fa-brands fa-discord"></i>
+                        <span>DIscord-eesha1026</span>
+                    </a>
+                    <a href="mailto:eeshamandiw79@gmail.com" class="social-link email">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>Email-eeshamandiw79@gmail.com</span>
+                    </a>
+                    <a href="https://github.com/eeshamandiw79-bot" target="_blank" class="social-link github">
+                        <i class="fa-brands fa-github"></i>
+                        <span>Github-eeshamandiw79-bot.github.io</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. COMICS / ARCHIVE SECTION -->
+        <section id="archive-section">
+            <div class="comic-title-wrapper">
+                <h1 class="comic-title">⚡Something About Me⚡</h1>
+            </div>
+            <div class="archive-grid">
+                <div class="comic-panel">
+                    <div class="badge">Live</div>
+                    <div class="speech-bubble">
+                        <h3>My Life</h3>
+                        <p>My Life Is Totaly Peacefull.</p>
+                    </div>
+                </div>
+                <div class="comic-panel">
+                    <div class="badge">Html</div>
+                    <div class="speech-bubble">
+                        <h3>How I Learn Html ?</h3>
+                        <p>I Am Not Go To Class For Learn Html. Only Learn It With Changing Sites.</p>
+                    </div>
+                </div>
+                <div class="comic-panel">
+                    <div class="badge">Special</div>
+                    <div class="speech-bubble">
+                        <h3>Special What ?</h3>
+                        <p>I Do Everything I like.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. LIKE BUTTON SECTION -->
+        <section id="like-section">
+            <div class="like-card">
+                <h2>Give A Like Btw ❤️ </h2>
+                <button id="like-btn" onclick="toggleLike()">
+                    ❤️ Like <span id="like-count">0</span>
+                </button> 
+            </div>
+            <script>
+                let isLiked = false;
+                let count = 0;
+                function toggleLike() {
+                    const likeBtn = document.getElementById("like-btn");
+                    if (!isLiked) {
+                        count++;
+                        isLiked = true;
+                        likeBtn.style.backgroundColor = "#2ed573";
+                        likeBtn.innerHTML = `💚 Liked <span id="like-count">${count}</span>`;
+                    } else {
+                        count--;
+                        isLiked = false;
+                        likeBtn.style.backgroundColor = "#ff4757";
+                        likeBtn.innerHTML = `❤️ Like <span id="like-count">${count}</span>`;
+                    }
+                }
+            </script>
+        </section>
+
+        <!-- 4. GUESTBOOK SECTION -->
+        <section id="guestbook-section">
+            <div class="guestbook-wrap">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <b><i><h1 style="color:#e07a95; font-family:'Fredoka', sans-serif; font-size:40px;">Guestbook</h1></i></b>
+                </div>
+                <div class="guestbook-card">
+                    <h2>leave a comment!</h2>
+                    <input type="text" id="nickname" placeholder="nickname (optional)" maxlength="30">
+                    <textarea id="message" placeholder="what do you think?" maxlength="500"></textarea>
+                    <div class="hint" id="charcount">500 characters left</div>
+                    <button class="send" id="sendBtn">Send ❤️</button>
+                    <div class="entries" id="entries"></div>
+                </div>
+                <p class="footnote">Add A Comment btw ^_^</p>
+            </div>
+
+            <script>
+                const STORAGE_KEY = 'guestbook-entries-v1';
+                const seedEntries = [
+                    { name: 'DilenA', badge: false, message: 'Art', time: '2026-07-29T11:28:00' },
+                    { name: 'anonymous', badge: false, message: 'Cs2 - C++', time: '2026-07-08T09:42:00' },
+                    { name: 'EMERELD PAW', badge: true, message: 'BEST DEVELOPER I SEE', time: '2026-07-03T16:28:00' },
+                    { name: 'Atulya', badge: true, message: 'love this site, keep it up!', time: '2026-06-29T13:44:00' }
+                ];
+
+                function loadEntries(){
+                    try{
+                        const raw = localStorage.getItem(STORAGE_KEY);
+                        if(raw) return JSON.parse(raw);
+                    }catch(e){}
+                    return seedEntries;
+                }
+
+                function saveEntries(entries){
+                    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); }catch(e){}
+                }
+
+                function formatTime(iso){
+                    const d = new Date(iso);
+                    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                    let h = d.getHours();
+                    const ampm = h >= 12 ? 'PM' : 'AM';
+                    h = h % 12; if(h === 0) h = 12;
+                    const min = String(d.getMinutes()).padStart(2,'0');
+                    return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} - ${h}:${min} ${ampm}`;
+                }
+
+                function escapeHtml(str){
+                    const div = document.createElement('div');
+                    div.textContent = str;
+                    return div.innerHTML;
+                }
+
+                function render(){
+                    const entries = loadEntries();
+                    const container = document.getElementById('entries');
+                    if(entries.length === 0){
+                        container.innerHTML = '<div class="empty">no comments yet. be the first to say hi!</div>';
+                        return;
+                    }
+                    container.innerHTML = entries.map(e => `
+                        <div class="entry">
+                            <div class="entry-top">
+                                <div class="name">${escapeHtml(e.name)}${e.badge ? '<span class="badge-star">&#9819;</span>' : ''}</div>
+                                <div class="time">${formatTime(e.time)}</div>
+                            </div>
+                            <div class="msg">${escapeHtml(e.message)}</div>
+                        </div>
+                    `).join('');
+                }
+
+                function updateCharCount(){
+                    const left = 500 - document.getElementById('message').value.length;
+                    document.getElementById('charcount').textContent = `${left} characters left`;
+                }
+
+                document.getElementById('message').addEventListener('input', updateCharCount);
+
+                document.getElementById('sendBtn').addEventListener('click', () => {
+                    const nickEl = document.getElementById('nickname');
+                    const msgEl = document.getElementById('message');
+                    const message = msgEl.value.trim();
+                    if(!message) { msgEl.focus(); return; }
+                    const name = nickEl.value.trim() || 'anonymous';
+
+                    const entries = loadEntries();
+                    entries.unshift({ name, badge: false, message, time: new Date().toISOString() });
+                    saveEntries(entries);
+
+                    nickEl.value = '';
+                    msgEl.value = '';
+                    updateCharCount();
+                    render();
+                });
+
+                updateCharCount();
+                render();
+            </script>
+        </section>
+
+        <!-- SCRIPTS FOR CONTROLS -->
+        <script>
+            function switchSection(sectionId, btnElement) {
+                const sections = document.querySelectorAll('section');
+                sections.forEach(sec => sec.classList.remove('active-section'));
+                const buttons = document.querySelectorAll('.nav-buttons .nav-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                document.getElementById(sectionId).classList.add('active-section');
+                btnElement.classList.add('active');
+            }
+
+            // Sunflower Petals Generation & Toggle
+            let petalsActive = true;
+            const petalContainer = document.getElementById('petalContainer');
+
+            function createPetals() {
+                petalContainer.innerHTML = '';
+                for (let i = 0; i < 25; i++) {
+                    const petal = document.createElement('div');
+                    petal.classList.add('petal');
+                    petal.style.left = Math.random() * 100 + 'vw';
+                    petal.style.top = -Math.random() * 20 + 'vh';
+                    const size = Math.random() * 10 + 10;
+                    petal.style.width = size + 'px';
+                    petal.style.height = (size * 1.6) + 'px';
+                    petal.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                    petal.style.animationDelay = (Math.random() * 5) + 's';
+                    petalContainer.appendChild(petal);
+                }
+            }
+
+            function togglePetals() {
+                petalsActive = !petalsActive;
+                const btn = document.getElementById('petalToggleBtn');
+                if (petalsActive) {
+                    petalContainer.style.display = 'block';
+                    btn.textContent = 'Sunflower: ON';
+                } else {
+                    petalContainer.style.display = 'none';
+                    btn.textContent = 'Sunflower: OFF';
+                }
+            }
+
+            createPetals();
+
+            // Dark Mode / White Mode Toggle
+            let isLightMode = false;
+            function toggleTheme() {
+                isLightMode = !isLightMode;
+                const body = document.body;
+                const btn = document.getElementById('themeToggleBtn');
+                if (isLightMode) {
+                    body.classList.add('light-mode');
+                    btn.textContent = 'Dark Mode';
+                } else {
+                    body.classList.remove('light-mode');
+                    btn.textContent = 'White Mode';
+                }
+            }
+        </script>
+
+        <!-- FOOTER -->
+        <center><h6 style="color: inherit; margin-top: 40px; opacity: 0.8;">Thank You For Visiting My Website ❤️</h6></center>
+        <footer>
+            <h5 style="color: inherit; opacity: 0.8;">Made By ❤️ P.K. Eesha Mandiw Panthuja</h5>
+        </footer>
+
+    </body>
+</html>
