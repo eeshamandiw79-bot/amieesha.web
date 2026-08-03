@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+
+                        <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Eesha's Table</title>    
+        <title>Eesha's Table</title>
         <style>
             * {
                 margin: 0;
@@ -424,14 +425,98 @@
                 }
                 .hero h1 { font-size: 40px; }
             }
+
+            /* Retro Pop-up Window Modal Styles */
+            .window-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background-color: rgba(0, 0, 0, 0.75);
+                backdrop-filter: blur(4px);
+                z-index: 10000;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .window-overlay.active {
+                display: flex;
+            }
+
+            .window {
+                width: 92%;
+                max-width: 1100px;
+                height: 88vh;
+                background-color: #3f202b;
+                border: 2px solid #5a2e3f;
+                border-radius: 12px;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+                display: flex;
+                flex-direction: column;
+                overflow: hidden;
+            }
+
+            .window-header {
+                background-color: #2b141d;
+                padding: 12px 18px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid #5a2e3f;
+            }
+
+            .window-title {
+                font-size: 1rem;
+                font-weight: bold;
+                color: #ffc5dd;
+                opacity: 0.95;
+            }
+
+            .window-controls {
+                display: flex;
+                gap: 8px;
+            }
+
+            .win-btn {
+                background: transparent;
+                border: none;
+                color: #ffc5dd;
+                cursor: pointer;
+                font-size: 1.1rem;
+                width: 28px;
+                height: 28px;
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .win-btn:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .win-btn.close:hover {
+                background-color: #e84118;
+                color: #fff;
+            }
+
+            .window-body {
+                flex: 1;
+                width: 100%;
+                height: 100%;
+                background-color: #ffffff;
+            }
+
+            .window-iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+                display: block;
+            }
         </style>
     </head>
     <body>
-
-        <!-- Sunflower Petals Container -->
         <div class="petal-container" id="petalContainer"></div>
 
-        <!-- TOP NAVIGATION BUTTONS -->
         <nav>
             <div class="logo">Eesha's Table</div>
             <div class="nav-buttons">
@@ -444,15 +529,14 @@
             </div>
         </nav>
 
-        <!-- 1. ABOUT SECTION -->
         <section id="about-section" class="active-section">
             <div class="hero">
                 <div class="card">
                     <h4>Am I Eesha</h4>
                     <ul>Yes Its Me Eesha.</ul>
                     <h5>I Do Everything I like .</h5>
-                </div>             
-                <div class="avatar">^_^</div> 
+                </div>
+                <div class="avatar">^_^</div>
             </div>
 
             <div class="hero">
@@ -476,7 +560,7 @@
                         <button style="padding:12px 25px; background:#00c3ff; color:white; border:none; border-radius:10px; cursor:pointer; font-size:18px;">
                             My Editz 🎮
                         </button>
-                    </a> 
+                    </a>
                     <p>I Am Editor. Visit There Btw ^_^ </p>
                 </div>
                 <div class="speech-bubble">
@@ -491,7 +575,7 @@
                         <button style="padding:12px 25px; background:#00c3ff; color:white; border:none; border-radius:10px; cursor:pointer; font-size:18px;">
                             📢 My YouTube Channel
                         </button>
-                    </a> 
+                    </a>
                     <p>I Am Small Content Creater Visit My Youtube Page Btw  ^_^ </p>
                 </div>
                 <div class="speech-bubble">
@@ -508,7 +592,7 @@
                     <p>The Best Thing I do In My LIfe Is Writing html Bcz Its Fun And Other Thing I Do Was Making Content For My Youtube Channel.</p>
                 </div>
             </div>
-            
+
             <div class="card">
                 <div class="avatar">⚡</div>
                 <h1>Eesha'S Media</h1>
@@ -528,9 +612,15 @@
                     </a>
                 </div>
             </div>
+
+            <div class="card" style="margin-top: 40px; text-align: center;">
+                <button id="openWindowBtn" style="padding:12px 25px; background:#00c3ff; color:white; border:none; border-radius:10px; cursor:pointer; font-size:18px; font-weight:bold; transition: 0.3s ease;">
+                    Friends-Minnie 🌸
+                </button>
+            </div>
+
         </section>
 
-        <!-- 2. COMICS / ARCHIVE SECTION -->
         <section id="archive-section">
             <div class="comic-title-wrapper">
                 <h1 class="comic-title">⚡Something About Me⚡</h1>
@@ -560,13 +650,12 @@
             </div>
         </section>
 
-        <!-- 3. LIKE BUTTON SECTION -->
         <section id="like-section">
             <div class="like-card">
                 <h2>Give A Like Btw ❤️ </h2>
                 <button id="like-btn" onclick="toggleLike()">
                     ❤️ Like <span id="like-count">0</span>
-                </button> 
+                </button>
             </div>
             <script>
                 let isLiked = false;
@@ -588,7 +677,6 @@
             </script>
         </section>
 
-        <!-- 4. GUESTBOOK SECTION -->
         <section id="guestbook-section">
             <div class="guestbook-wrap">
                 <div style="text-align: center; margin-bottom: 20px;">
@@ -612,6 +700,12 @@
                     { name: 'anonymous', badge: false, message: 'Cs2 - C++', time: '2026-07-08T09:42:00' },
                     { name: 'EMERELD PAW', badge: true, message: 'BEST DEVELOPER I SEE', time: '2026-07-03T16:28:00' },
                     { name: 'Atulya', badge: true, message: 'love this site, keep it up!', time: '2026-06-29T13:44:00' }
+                    { 
+  name: 'Minnie', 
+  badge: false, 
+  message: "This is cool! of course I'm going to use all 500 of the characters I have made available by my good friend Eesha! I don't really know what else to type, but I just really need to reach the character limit to see why it's there and whether if it really works. I'm assuming it's some limit put on from the Javascript, though I don't know what the use of that in the day an age where you can post millions of bytes of data in just seconds. Anyways I'm getting close to the limit and will hit it any momm", 
+  time: '2026-08-02T18:33:00' 
+}
                 ];
 
                 function loadEntries(){
@@ -689,7 +783,24 @@
             </script>
         </section>
 
-        <!-- SCRIPTS FOR CONTROLS -->
+        <div class="window-overlay" id="windowOverlay">
+            <div class="window">
+                <div class="window-header">
+                    <div class="window-title">self://colon3</div>
+                    <div class="window-controls">
+                        <button class="win-btn">–</button>
+                        <button class="win-btn">□</button>
+                        <button class="win-btn close" id="closeWindowBtn">×</button>
+                    </div>
+                </div>
+                <div class="window-body">
+                    <iframe src="https://amiminnie.github.io/" class="window-iframe" title="Friends Minnie"></iframe>
+                </div>
+            </div>
+        </div>
+
+ 
+
         <script>
             function switchSection(sectionId, btnElement) {
                 const sections = document.querySelectorAll('section');
@@ -748,13 +859,49 @@
                     btn.textContent = 'White Mode';
                 }
             }
+
+            // First Pop-up Window Logic
+            const openWindowBtn = document.getElementById('openWindowBtn');
+            const closeWindowBtn = document.getElementById('closeWindowBtn');
+            const windowOverlay = document.getElementById('windowOverlay');
+
+            openWindowBtn.addEventListener('click', () => {
+                windowOverlay.classList.add('active');
+            });
+
+            closeWindowBtn.addEventListener('click', () => {
+                windowOverlay.classList.remove('active');
+            });
+
+            windowOverlay.addEventListener('click', (e) => {
+                if (e.target === windowOverlay) {
+                    windowOverlay.classList.remove('active');
+                }
+            });
+
+            // Second Pop-up Window Logic
+            const openWindowBtn2 = document.getElementById('openWindowBtn2');
+            const closeWindowBtn2 = document.getElementById('closeWindowBtn2');
+            const windowOverlay2 = document.getElementById('windowOverlay2');
+
+            openWindowBtn2.addEventListener('click', () => {
+                windowOverlay2.classList.add('active');
+            });
+
+            closeWindowBtn2.addEventListener('click', () => {
+                windowOverlay2.classList.remove('active');
+            });
+
+            windowOverlay2.addEventListener('click', (e) => {
+                if (e.target === windowOverlay2) {
+                    windowOverlay2.classList.remove('active');
+                }
+            });
         </script>
 
-        <!-- FOOTER -->
         <center><h6 style="color: inherit; margin-top: 40px; opacity: 0.8;">Thank You For Visiting My Website ❤️</h6></center>
         <footer>
             <h5 style="color: inherit; opacity: 0.8;">Made By ❤️ P.K. Eesha Mandiw Panthuja</h5>
         </footer>
-
     </body>
 </html>
